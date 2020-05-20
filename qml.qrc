@@ -4,4 +4,7 @@
         <file>VirtualDevs.qml</file>
         <file>DevInfo.qml</file>
     </qresource>
+    <qresource prefix="/properties">
+        <file>log4cplus.properties</file>
+    </qresource>
 </RCC>

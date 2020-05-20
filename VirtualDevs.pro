@@ -38,6 +38,19 @@ include($$PWD/util/util.pri)
 include($$PWD/handler/handler.pri)
 include ($$PWD/verify/verify.pri)
 
+macx {
+    INCLUDEPATH += /Users/lutery/DevelopmentKit/log4cplus/qt/include
+    LIBS += -L/Users/lutery/DevelopmentKit/log4cplus/qt/lib -llog4cplus.3.0.0 -L/Users/lutery/DevelopmentKit/log4cplus/qt/lib -llog4cplusqt5debugappender.3.0.0
+}
+
+unix:!macx{
+
+}
+
+win32{
+
+}
+
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
 
