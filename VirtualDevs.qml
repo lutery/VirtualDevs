@@ -31,6 +31,10 @@ Rectangle {
                 text: "+"
 
                 Layout.alignment: Qt.AlignRight
+
+                onClicked: {
+
+                }
             }
         }
     }

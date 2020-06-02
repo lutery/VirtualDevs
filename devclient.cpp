@@ -15,6 +15,7 @@
 #include "handler/prninfohandler.h"
 #include "handler/resultinfohandler.h"
 #include "handler/unknownorderhandler.h"
+#include "MyLog.h"
 
 DevClient::DevClient(QObject *parent) : QObject(parent), mpClient(nullptr)
 {

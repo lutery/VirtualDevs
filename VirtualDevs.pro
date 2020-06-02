@@ -14,6 +14,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+        devservice.cpp \
         main.cpp \
         asyncdevclient.cpp \
         devclient.cpp \
@@ -24,12 +25,14 @@ SOURCES += \
         printerorder.cpp
 
 HEADERS += \
+        MyLog.h \
         asyncdevclient.h \
         devclient.h \
         devicemanager.h \
         deviceorder.h \
         devicestatus.h \
         devinit.h \
+        devservice.h \
         printerorder.h
 
 RESOURCES += qml.qrc
