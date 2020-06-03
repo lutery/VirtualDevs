@@ -22,6 +22,7 @@ signals:
 
 public slots:
     void initParam();
+    void initParam(QString serverIp, int serverPort, int devCount);
 
 private:
     int mDevCount = 100;

@@ -1,5 +1,6 @@
 #include "devservice.h"
-#include "asyncdevclient.h"
+#include "devicemanager.h"
+#include "devinit.h"
 
 #include <QThreadPool>
 
@@ -10,8 +11,11 @@ namespace onechchy
 
     }
 
-    void DevService::addDev(QString hostIp, quint16 hostPort)
+    void DevService::initService(QString hostIp, quint16 hostPort, int numDev)
     {
-        QThreadPool::globalInstance()->start(new AsyncDevClient(hostIp, hostPort));
+        DevInit initParam;
+        initParam.initParam(hostIp, hostPort, numDev);
+
+        DeviceManager::getInstance(initParam);
     }
 }

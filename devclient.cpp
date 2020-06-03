@@ -42,11 +42,16 @@ DevClient::DevClient(QObject *parent) : QObject(parent), mpClient(nullptr)
     heartBeatHandler->setNext(prnDataSavaHandler);
     prnDataSavaHandler->setNext(prnInfoHandler);
     prnInfoHandler->setNext(unknownHandler);
+
+    mpMyLog = new MyLog();
 }
 
 DevClient::~DevClient()
 {
-
+    if (mpMyLog != nullptr)
+    {
+        delete mpMyLog;
+    }
 }
 
 void DevClient::initDevice(QString serverIP, quint16 serverPort)
@@ -56,12 +61,16 @@ void DevClient::initDevice(QString serverIP, quint16 serverPort)
 
     mpClient->connectToHost(serverIP, serverPort);
     mDevID = ToolUtil::str2Md5(QUuid::createUuid().toString());
-    qDebug() << "DevId " << mDevID << " born";
+//    qDebug() << "DevId " << mDevID << " born";
+    LOGIM("DevId", mDevID.toStdString(), "born");
+    emit receiveLog(mpMyLog->addLogs({"DevId", mDevID, "born"}));
 }
 
 void DevClient::readData()
 {
-    qDebug() << "DevId " << mDevID << "receive dara";
+//    qDebug() << "DevId " << mDevID << "receive dara";
+    LOGIM("DevId", mDevID.toStdString(), "receive data");
+    emit receiveLog(mpMyLog->addLogs({"DevId", mDevID, "born"}));
 
     if (mpClient->bytesAvailable() <= 0)
     {
@@ -70,7 +79,9 @@ void DevClient::readData()
 
     QByteArray readBuff = mpClient->readAll();
 
-    qDebug() << "readBuff is " << ToolUtil::bytes2HexStr(readBuff);
+//    qDebug() << "readBuff is " << ToolUtil::bytes2HexStr(readBuff);
+    LOGIM("readBuff is", ToolUtil::bytes2HexStr(readBuff).toStdString());
+    emit receiveLog(mpMyLog->addLogs({"readBuff is", ToolUtil::bytes2HexStr(readBuff)}));
 
     mBuffLock.lock();
     mClientBuff.append(readBuff);
@@ -106,6 +117,8 @@ void DevClient::readData()
     qDebug() << "jsonLength is " << jsonLength;
 //    qDebug() << "lengthOfJson is " << ToolUtil::bytes2HexStr(lengthOfJson);
 //    qDebug() << "mClientBuff[3] " << ToolUtil::bytes2HexStr(mClientBuff.left(8).right(4));
+    LOGIM("jsonLength is", QString::number(jsonLength).toStdString());
+    emit receiveLog(mpMyLog->addLogs({"jsonLength is", QString::number(jsonLength)}));
 
     if (mClientBuff.length() <= (jsonLength + lengthOfVerifyType + headerLength))
     {
@@ -116,7 +129,11 @@ void DevClient::readData()
     if (endByte != mClientBuff[endIndex])
     {
         qDebug() << "严重错误，尾部标识错误";
+        LOGI("严重错误，尾部标识错误");
+        emit receiveLog(mpMyLog->addLogs({"严重错误，尾部标识错误"}));
         qDebug() << "endIndex is " << endIndex << " and " << ToolUtil::bytes2HexStr(mClientBuff);
+        LOGIM("endIndex is", QString::number(endIndex).toStdString(), "and", ToolUtil::bytes2HexStr(mClientBuff).toStdString());
+        emit receiveLog(mpMyLog->addLogs({"endIndex is", QString::number(endIndex), "and", ToolUtil::bytes2HexStr(mClientBuff)}));
         return;
     }
 
@@ -149,7 +166,9 @@ void DevClient::netError(QAbstractSocket::SocketError socketError)
 
 void DevClient::connected()
 {
-    qDebug() << "与服务器连接成功";
+//    qDebug() << "与服务器连接成功";
+    LOGI("与服务器连接成功");
+    emit receiveLog(mpMyLog->addLogs({"与服务器连接成功"}));
 
     QByteArray initArray;
     initArray.append(PrinterOrder::DEVINIT());
@@ -162,12 +181,16 @@ void DevClient::connected()
 
 void DevClient::disconnected()
 {
-    qDebug() << "与服务器断开连接";
+//    qDebug() << "与服务器断开连接";
+    LOGI("与服务器断开连接");
+    emit receiveLog(mpMyLog->addLogs({"与服务器断开连接"}));
 }
 
 void DevClient::hasWritten(qint64 bytes)
 {
-    qDebug() << "has writer bytes count is " << bytes;
+//    qDebug() << "has writer bytes count is " << bytes;
+    LOGIM("has writer bytes count is", QString::number(bytes).toStdString());
+    emit receiveLog(mpMyLog->addLogs({"has writer bytes count is", QString::number(bytes)}));
 }
 
 void DevClient::writeAndFlush(QByteArray &data)

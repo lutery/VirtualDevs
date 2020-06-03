@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QVector>
 
-class DevClient;
+class AsyncDevClient;
 class DevInit;
 
 class DeviceManager : public QObject
@@ -21,6 +21,7 @@ public:
 
 signals:
     void finish();
+    void receiveLog(QString);
 
 public slots:
 
@@ -28,7 +29,7 @@ private:
     int mDevCount;
     QString mServerIP;
     int mServerPort;
-    QVector<DevClient*> mDevs;
+    QVector<AsyncDevClient*> mDevs;
     static DeviceManager* gpInstance;
 };
 

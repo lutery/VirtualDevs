@@ -61,6 +61,13 @@ void DevInit::initParam()
     }
 }
 
+void DevInit::initParam(QString serverIp, int serverPort, int devCount)
+{
+    mServerIP = serverIp;
+    mServerPort = serverPort;
+    mDevCount = devCount;
+}
+
 QString DevInit::serverIP() const
 {
     return mServerIP;

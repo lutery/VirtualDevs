@@ -17,7 +17,10 @@ DeviceManager::DeviceManager(DevInit &devInit, QObject *parent):QObject (parent)
     qDebug() << "mDevCount is " << mDevCount;
     for (int i = 0; i < mDevCount; ++i)
     {
-        QThreadPool::globalInstance()->start(new AsyncDevClient(mServerIP, mServerPort));
+        AsyncDevClient* pDevClient = new AsyncDevClient(mServerIP, mServerPort);
+        connect(pDevClient, SIGNAL(receiveLog(QString)), this, SIGNAL(receiveLog(QString)));
+        mDevs.append(pDevClient);
+        QThreadPool::globalInstance()->start(pDevClient);
 //        DevClient* devClient = new DevClient(nullptr);
 //        devClient->initDevice(mServerIP, mServerPort);
 

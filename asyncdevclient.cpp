@@ -7,12 +7,31 @@ AsyncDevClient::AsyncDevClient(QString serverIP, quint16 serverPort) : mServerIP
 
 }
 
+AsyncDevClient::~AsyncDevClient()
+{
+    if (mpDevClient != nullptr)
+    {
+        delete mpDevClient;
+    }
+}
+
+QString AsyncDevClient::devID() const
+{
+    if (mpDevClient != nullptr)
+    {
+        return mpDevClient->devID();
+    }
+
+    return "-1";
+}
+
 void AsyncDevClient::run()
 {
-            DevClient* devClient = new DevClient();
-            devClient->initDevice(mServerIP, mServerPort);
+            mpDevClient = new DevClient();
+            mpDevClient->initDevice(mServerIP, mServerPort);
 
             QEventLoop loop;
-            QObject::connect(devClient, SIGNAL(finish()), &loop, SLOT(quit()));
+            QObject::connect(mpDevClient, SIGNAL(receiveLog(QString)), this, SIGNAL(receiveLog(QString)));
+            QObject::connect(mpDevClient, SIGNAL(finish()), &loop, SLOT(quit()));
             loop.exec();
 }

@@ -5,10 +5,13 @@
 #include <log4cplus/logger.h>
 #include <log4cplus/configurator.h>
 #include <log4cplus/loggingmacros.h>
+#include <QList>
+#include <QString>
+#include <initializer_list>
 
 class MyLog
 {
-private:
+public:
     MyLog(){};
 
 public:
@@ -42,6 +45,13 @@ public:
     {
         LOG4CPLUS_ERROR(MyLog::MemoryCheck(), LOG4CPLUS_TEXT(logTxt));
     }
+
+public:
+    QString addLogs(std::initializer_list<QString> logs);
+
+private:
+    const int mMaxLogCount = 500;
+    QList<QString> mLogs;
 };
 
 #define LOGI(logTxt) \

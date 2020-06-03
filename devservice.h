@@ -13,7 +13,7 @@ namespace onechchy
     public:
         explicit DevService(QObject *parent = nullptr);
 
-        Q_INVOKABLE void addDev(QString hostIp, quint16 hostPort);
+        Q_INVOKABLE void initService(QString hostIp, quint16 hostPort, int numDev);
 
     signals:
 

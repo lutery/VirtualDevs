@@ -7,6 +7,7 @@
 
 class QTcpSocket;
 class AbsHandler;
+class MyLog;
 
 class DevClient : public QObject
 {
@@ -20,6 +21,7 @@ public:
 
 signals:
     void finish();
+    void receiveLog(QString);
 
 public slots:
     void readData();
@@ -33,6 +35,7 @@ public slots:
 private:
     QString mServerIP;
     quint16 mServerPort;
+    MyLog* mpMyLog = nullptr;
     AbsHandler* mpHandler;
     QTcpSocket* mpClient;
     QByteArray mClientBuff;
