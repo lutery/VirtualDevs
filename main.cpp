@@ -44,14 +44,15 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
-    qmlRegisterSingletonType<onechchy::DevService>("DevServiceQml", 1, 0, "DevService", [](QQmlEngine* engine, QJSEngine* scriptEngine) -> QObject* {
-        Q_UNUSED(engine);
-        Q_UNUSED(scriptEngine);
+    qmlRegisterType<onechchy::DevService>("DevServiceQml", 1, 0, "DevService");
+//    qmlRegisterSingletonType<onechchy::DevService>("DevServiceQml", 1, 0, "DevService", [](QQmlEngine* engine, QJSEngine* scriptEngine) -> QObject* {
+//        Q_UNUSED(engine);
+//        Q_UNUSED(scriptEngine);
 
-        onechchy::DevService* devService = new onechchy::DevService();
+//        onechchy::DevService* devService = new onechchy::DevService();
 
-        return devService;
-    });
+//        return devService;
+//    });
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));

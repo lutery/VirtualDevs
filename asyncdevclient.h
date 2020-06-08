@@ -15,9 +15,12 @@ public:
     virtual ~AsyncDevClient();
 
     QString devID() const;
+    QString logs() const;
 
 signals:
     void receiveLog(QString);
+    void devconnect(QString);
+    void devdisconnect(QString);
 
 protected:
     void run() override;

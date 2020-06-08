@@ -25,6 +25,11 @@ QString AsyncDevClient::devID() const
     return "-1";
 }
 
+QString AsyncDevClient::logs() const
+{
+
+}
+
 void AsyncDevClient::run()
 {
             mpDevClient = new DevClient();
@@ -33,5 +38,7 @@ void AsyncDevClient::run()
             QEventLoop loop;
             QObject::connect(mpDevClient, SIGNAL(receiveLog(QString)), this, SIGNAL(receiveLog(QString)));
             QObject::connect(mpDevClient, SIGNAL(finish()), &loop, SLOT(quit()));
+            QObject::connect(mpDevClient, SIGNAL(devconnect(QString)), this, SIGNAL(devconnect(QString)));
+            QObject::connect(mpDevClient, SIGNAL(devdisconnect(QString)), this, SIGNAL(devdisconnect(QString)));
             loop.exec();
 }

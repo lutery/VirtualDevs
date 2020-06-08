@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.12
+import DevServiceQml 1.0
 
 Rectangle {
 
@@ -39,4 +40,21 @@ Rectangle {
         }
     }
 
+//    DevService {
+//        onDevConnect: {
+
+//        }
+
+//        onDevDisconnect: {
+
+//        }
+//    }
+
+//    DevService.onDevConnect: {
+//        console.log(devId + " connect")
+//    }
+
+//    DevService.onDevDisconnect: {
+//        console.log(devId + " disconnect")
+//    }
 }

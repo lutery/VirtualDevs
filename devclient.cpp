@@ -44,6 +44,8 @@ DevClient::DevClient(QObject *parent) : QObject(parent), mpClient(nullptr)
     prnInfoHandler->setNext(unknownHandler);
 
     mpMyLog = new MyLog();
+
+    mDevID = ToolUtil::str2Md5(QUuid::createUuid().toString());
 }
 
 DevClient::~DevClient()
@@ -60,7 +62,7 @@ void DevClient::initDevice(QString serverIP, quint16 serverPort)
     mServerPort = serverPort;
 
     mpClient->connectToHost(serverIP, serverPort);
-    mDevID = ToolUtil::str2Md5(QUuid::createUuid().toString());
+
 //    qDebug() << "DevId " << mDevID << " born";
     LOGIM("DevId", mDevID.toStdString(), "born");
     emit receiveLog(mpMyLog->addLogs({"DevId", mDevID, "born"}));
@@ -169,6 +171,7 @@ void DevClient::connected()
 //    qDebug() << "与服务器连接成功";
     LOGI("与服务器连接成功");
     emit receiveLog(mpMyLog->addLogs({"与服务器连接成功"}));
+    emit devconnect(this->mDevID);
 
     QByteArray initArray;
     initArray.append(PrinterOrder::DEVINIT());
@@ -184,6 +187,7 @@ void DevClient::disconnected()
 //    qDebug() << "与服务器断开连接";
     LOGI("与服务器断开连接");
     emit receiveLog(mpMyLog->addLogs({"与服务器断开连接"}));
+    emit devdisconnect(this->mDevID);
 }
 
 void DevClient::hasWritten(qint64 bytes)
@@ -208,4 +212,9 @@ void DevClient::writeAndFlush(QByteArray &&data)
 QString DevClient::devID() const
 {
     return mDevID;
+}
+
+QString DevClient::logs() const
+{
+    return mpMyLog->logs();
 }

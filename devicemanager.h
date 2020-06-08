@@ -2,7 +2,7 @@
 #define DEVICEMANAGER_H
 
 #include <QObject>
-#include <QVector>
+#include <QMap>
 
 class AsyncDevClient;
 class DevInit;
@@ -19,17 +19,25 @@ public:
     static DeviceManager* getInstance();
     ~DeviceManager();
 
+    void switchDev(QString devId);
+    QString requestDevLog(QString devId);
+
 signals:
     void finish();
     void receiveLog(QString);
+    void sdevConnect(QString devId);
+    void sdevDisconnect(QString devId);
 
 public slots:
+    void devConnect(QString devId);
+    void devDisconnect(QString devId);
 
 private:
     int mDevCount;
     QString mServerIP;
     int mServerPort;
-    QVector<AsyncDevClient*> mDevs;
+    AsyncDevClient* mpCurDev = nullptr;
+    QMap<QString, AsyncDevClient*> mDevs;
     static DeviceManager* gpInstance;
 };
 

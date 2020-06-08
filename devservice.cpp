@@ -17,5 +17,8 @@ namespace onechchy
         initParam.initParam(hostIp, hostPort, numDev);
 
         DeviceManager::getInstance(initParam);
+
+        QObject::connect(DeviceManager::getInstance(), SIGNAL(sdevConnect(QString)), this, SIGNAL(devConnect(QString)));
+        QObject::disconnect(DeviceManager::getInstance(), SIGNAL(sdevDisconnect(QString)), this, SIGNAL(devDisconnect(QString)));
     }
 }

@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QString>
+#include <QList>
 #include "MyLog.h"
 
 namespace onechchy
@@ -16,7 +17,8 @@ namespace onechchy
         Q_INVOKABLE void initService(QString hostIp, quint16 hostPort, int numDev);
 
     signals:
-
+        void devConnect(QString devId);
+        void devDisconnect(QString devId);
     };
 }
 

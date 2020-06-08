@@ -48,6 +48,7 @@ public:
 
 public:
     QString addLogs(std::initializer_list<QString> logs);
+    QString logs();
 
 private:
     const int mMaxLogCount = 500;

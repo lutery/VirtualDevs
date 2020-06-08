@@ -18,10 +18,13 @@ public:
     void initDevice(QString serverIP, quint16 serverPort);
 
     QString devID() const;
+    QString logs() const;
 
 signals:
     void finish();
     void receiveLog(QString);
+    void devconnect(QString);
+    void devdisconnect(QString);
 
 public slots:
     void readData();
