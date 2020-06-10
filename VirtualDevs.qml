@@ -15,6 +15,11 @@ Rectangle {
 
             Layout.fillWidth: true
             Layout.fillHeight: true
+
+            delegate: devsDelegate
+            model: devsModel
+            highlight: Rectangle { color: "lightsteelblue"; radius: 5 }
+            focus: true
         }
 
         RowLayout {
@@ -40,21 +45,43 @@ Rectangle {
         }
     }
 
-//    DevService {
-//        onDevConnect: {
+    Component{
+        id: devsDelegate
+        Item {
+            width: parent.width
+            height: 16
 
-//        }
+            Column {
+                Text { text: '<b>devid:</b> ' + devid }
+            }
 
-//        onDevDisconnect: {
+            MouseArea{
+                    anchors.fill: parent
+                    onClicked: {
+                        console.log(index)
+                        virtualList.currentIndex = index
+                    }
+            }
+        }
+    }
 
-//        }
-//    }
+    ListModel {
+        id: devsModel
+    }
 
-//    DevService.onDevConnect: {
-//        console.log(devId + " connect")
-//    }
+    Connections{
+        target: DevService
+        onDevConnect: {
+            console.log(devId + " connect");
+            devsModel.append({"devid":devId})
+        }
+    }
 
-//    DevService.onDevDisconnect: {
-//        console.log(devId + " disconnect")
-//    }
+    Connections{
+        target: DevService
+        onDevDisConnect: {
+            console.log(devId + " disconnect");
+            devsModel.remove({"devid":devId})
+        }
+    }
 }

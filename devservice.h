@@ -19,6 +19,7 @@ namespace onechchy
     signals:
         void devConnect(QString devId);
         void devDisconnect(QString devId);
+        void receiveLog(QString log);
     };
 }
 

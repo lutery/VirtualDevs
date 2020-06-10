@@ -19,6 +19,7 @@ namespace onechchy
         DeviceManager::getInstance(initParam);
 
         QObject::connect(DeviceManager::getInstance(), SIGNAL(sdevConnect(QString)), this, SIGNAL(devConnect(QString)));
-        QObject::disconnect(DeviceManager::getInstance(), SIGNAL(sdevDisconnect(QString)), this, SIGNAL(devDisconnect(QString)));
+        QObject::connect(DeviceManager::getInstance(), SIGNAL(sdevDisconnect(QString)), this, SIGNAL(devDisconnect(QString)));
+        QObject::connect(DeviceManager::getInstance(), SIGNAL(receiveLog(QString)), this, SIGNAL(receiveLog(QString)));
     }
 }

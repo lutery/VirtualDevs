@@ -10,6 +10,7 @@ Window {
     title: qsTr("Hello World")
 
     signal initDev
+    signal switchDev(string devid)
 
     property int devNum: 1
     property string hostIp: "startprinter.com.cn"
@@ -24,9 +25,14 @@ Window {
         }
 
         DevInfo {
+            id: devInfo
             Layout.fillHeight: true
             Layout.fillWidth: true
         }
+    }
+
+    onSwitchDev: {
+        devInfo.switchDev(devid)
     }
 
     onDevNumChanged: {
@@ -36,18 +42,29 @@ Window {
     onInitDev: {
         console.log("start init")
         console.log("devNum:", devNum, "hostIp:", hostIp, "hostPort:", hostPort)
-        devService.initService(hostIp, hostPort, devNum)
+        DevService.initService(hostIp, hostPort, devNum)
     }
 
-    DevService{
-        id: devService
+//    Connections {
+//        target: DevService
+//        onReceiveLog: {
+//           console.log("log: " + log)
+//        }
+//    }
 
-        onDevConnect: {
-            console.log(devId + " connect")
-        }
+//    DevService{
+//        id: devService
 
-        onDevDisconnect: {
-            console.log(devId + " disconnect")
-        }
-    }
+//        onDevConnect: {
+//            console.log(devId + " connect")
+//        }
+
+//        onDevDisconnect: {
+//            console.log(devId + " disconnect")
+//        }
+
+//        onReceiveLog: {
+//            console.log("log: " + log)
+//        }
+//    }
 }

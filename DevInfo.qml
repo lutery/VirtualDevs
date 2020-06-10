@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import DevServiceQml 1.0
 
 Rectangle {
 
@@ -9,6 +10,7 @@ Rectangle {
 
         anchors.fill: parent
 
+        wrapMode: Text.Wrap
         text: "日志窗口"
     }
 
@@ -17,4 +19,11 @@ Rectangle {
         // 这里使用与c++层进行信号连接接收新设备的日志信息
     }
 
+    Connections {
+        target: DevService
+        onReceiveLog: {
+           console.log("log: " + log)
+           logTxt.text = logTxt.text + "\n\n" + log
+        }
+    }
 }
