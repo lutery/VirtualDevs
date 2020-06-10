@@ -6,6 +6,7 @@
 
 class AsyncDevClient;
 class DevInit;
+class DevClient;
 
 class DeviceManager : public QObject
 {

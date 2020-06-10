@@ -31,7 +31,8 @@ Window {
 
             TextEdit {
                 id: serverIP
-                text: "serverprinter.com.cn"
+//                text: "startprinter.com.cn"
+                text: "localhost"
             }
         }
 
@@ -50,13 +51,15 @@ Window {
             Button {
                 text: "确定"
                 onClicked: {
-                    configWin.hide()
+//                    configWin.hide()
                     var component = Qt.createComponent("MainPanel.qml")
-                    mainPanel = component.createObject(configWin)
+                    mainPanel = component.createObject()
                     mainPanel.devNum = numDev.text
                     mainPanel.hostIp = serverIP.text
                     mainPanel.hostPort = serverPort.text
+                    mainPanel.initDev()
                     mainPanel.show()
+                    configWin.close()
                 }
             }
 

@@ -3,6 +3,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QString>
+#include <QDebug>
 
 #include <log4cplus/logger.h>
 #include <log4cplus/configurator.h>
@@ -10,7 +11,10 @@
 
 #include "MyLog.h"
 #include "devservice.h"
+#include "devicemanager.h"
+#include "devinit.h"
 
+#include <iostream>
 #include <istream>
 #include <sstream>
 #include <QThreadPool>

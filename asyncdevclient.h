@@ -4,10 +4,11 @@
 #include <QRunnable>
 #include <QString>
 #include <QObject>
+#include <QThread>
 
 class DevClient;
 
-class AsyncDevClient : public QObject, public QRunnable
+class AsyncDevClient : public QThread
 {
     Q_OBJECT
 public:

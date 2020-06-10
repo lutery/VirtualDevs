@@ -32,6 +32,10 @@ QString AsyncDevClient::logs() const
 
 void AsyncDevClient::run()
 {
+//    while (true) {
+//        qDebug() << "AsyncDevClient run";
+//    }
+
             mpDevClient = new DevClient();
             mpDevClient->initDevice(mServerIP, mServerPort);
 

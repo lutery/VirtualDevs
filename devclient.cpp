@@ -16,6 +16,7 @@
 #include "handler/resultinfohandler.h"
 #include "handler/unknownorderhandler.h"
 #include "MyLog.h"
+#include "verify/crc16ccitt.h"
 
 DevClient::DevClient(QObject *parent) : QObject(parent), mpClient(nullptr)
 {
@@ -63,14 +64,14 @@ void DevClient::initDevice(QString serverIP, quint16 serverPort)
 
     mpClient->connectToHost(serverIP, serverPort);
 
-//    qDebug() << "DevId " << mDevID << " born";
+    qDebug() << "DevId " << mDevID << " born";
     LOGIM("DevId", mDevID.toStdString(), "born");
     emit receiveLog(mpMyLog->addLogs({"DevId", mDevID, "born"}));
 }
 
 void DevClient::readData()
 {
-//    qDebug() << "DevId " << mDevID << "receive dara";
+    qDebug() << "DevId " << mDevID << "receive dara";
     LOGIM("DevId", mDevID.toStdString(), "receive data");
     emit receiveLog(mpMyLog->addLogs({"DevId", mDevID, "born"}));
 
@@ -168,23 +169,46 @@ void DevClient::netError(QAbstractSocket::SocketError socketError)
 
 void DevClient::connected()
 {
-//    qDebug() << "与服务器连接成功";
+    qDebug() << "与服务器连接成功";
     LOGI("与服务器连接成功");
     emit receiveLog(mpMyLog->addLogs({"与服务器连接成功"}));
     emit devconnect(this->mDevID);
 
-    QByteArray initArray;
-    initArray.append(PrinterOrder::DEVINIT());
-    initArray.append(QByteArrayLiteral("\x00\x00\x00\x00"));
-    initArray.append(QByteArrayLiteral("\x03\x00\x00"));
-    initArray.append(QByteArrayLiteral("\x24"));
+//    QByteArray initArray;
+//    initArray.append(PrinterOrder::DEVINIT());
+//    initArray.append(QByteArrayLiteral("\x00\x00\x00\x00"));
+//    initArray.append(QByteArrayLiteral("\x03\x00\x00"));
+//    initArray.append(QByteArrayLiteral("\x24"));
 
-    mpClient->write(initArray);
+    qDebug() << "返回设备信息给服务器";
+    qDebug() << "dev id is " << this->devID();
+
+    QJsonObject devInfoJson;
+    devInfoJson.insert("deviceid", this->devID());
+    devInfoJson.insert("driver", "zpl");
+    devInfoJson.insert("page", "100X180");
+    devInfoJson.insert("resolution", "203X203");
+    devInfoJson.insert("packageSize", 4096);
+
+    QJsonDocument document;
+    document.setObject(devInfoJson);
+    QByteArray devBytes = ToolUtil::strCodecTo(document.toJson(), "gb18030");
+
+
+    QByteArray byteBuf;
+    byteBuf.append(PrinterOrder::DEVINFO());
+    byteBuf.append(ToolUtil::intToBytes(devBytes.length()));
+    byteBuf.append((unsigned char)CRC16CCITT().verifyType());
+    byteBuf.append(CRC16CCITT().generateVerifyCode(devBytes));
+    byteBuf.append(devBytes);
+    byteBuf.append(0x24);
+
+    mpClient->write(byteBuf);
 }
 
 void DevClient::disconnected()
 {
-//    qDebug() << "与服务器断开连接";
+    qDebug() << "与服务器断开连接";
     LOGI("与服务器断开连接");
     emit receiveLog(mpMyLog->addLogs({"与服务器断开连接"}));
     emit devdisconnect(this->mDevID);

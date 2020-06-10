@@ -3,6 +3,7 @@
 #include "asyncdevclient.h"
 #include "devinit.h"
 #include <QThreadPool>
+#include <QThread>
 
 DeviceManager* DeviceManager::gpInstance = nullptr;
 
@@ -18,16 +19,25 @@ DeviceManager::DeviceManager(DevInit &devInit, QObject *parent):QObject (parent)
     for (int i = 0; i < mDevCount; ++i)
     {
         AsyncDevClient* pDevClient = new AsyncDevClient(mServerIP, mServerPort);
+//        DevClient* pDevClient = new DevClient();
+//        pDevClient->initDevice(mServerIP, mServerPort);
         // 只有切换到某个设备的时候，才进行信号的连接
-//        connect(pDevClient, SIGNAL(receiveLog(QString)), this, SIGNAL(receiveLog(QString)));
+        connect(pDevClient, SIGNAL(receiveLog(QString)), this, SIGNAL(receiveLog(QString)));
         connect(pDevClient, SIGNAL(devconnect(QString)), this, SLOT(devConnect(QString)));
         connect(pDevClient, SIGNAL(devdisconnect(QString)), this, SLOT(devDisconnect(QString)));
         mDevs.insert(pDevClient->devID(), pDevClient);
-        QThreadPool::globalInstance()->start(pDevClient);
+        pDevClient->start();
+//        QThreadPool::globalInstance()->start(pDevClient);
 //        DevClient* devClient = new DevClient(nullptr);
 //        devClient->initDevice(mServerIP, mServerPort);
 
 //        mDevs.append(devClient);
+//        QThread* thread = new QThread(pDevClient);
+//        connect(pDevClient, SIGNAL(devdisconnect(QString)), thread, SLOT(quit()));
+//        connect(thread, &QThread::finished, [=](){qDebug() << "线程退出";});
+//        connect(thread, &QThread::started, [=](){qDebug() << "线程启动";});
+//        pDevClient->moveToThread(thread);
+//        thread->start();
     }
 }
 
@@ -81,11 +91,11 @@ QString DeviceManager::requestDevLog(QString devId)
 
 void DeviceManager::devConnect(QString devId)
 {
-    emit devConnect(devId);
+    emit sdevConnect(devId);
 }
 
 void DeviceManager::devDisconnect(QString devId)
 {
-    emit devDisconnect(devId);
+    emit sdevDisconnect(devId);
     mDevs.remove(devId);
 }

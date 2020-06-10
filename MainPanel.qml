@@ -9,10 +9,11 @@ Window {
     height: 480
     title: qsTr("Hello World")
 
+    signal initDev
+
     property int devNum: 1
-    property string hostIp: "serverprinter.com.cn"
+    property string hostIp: "startprinter.com.cn"
     property int hostPort: 9100
-    property bool isInit: false
 
     RowLayout {
         anchors.fill: parent
@@ -32,16 +33,10 @@ Window {
         console.log("dev number change " + devNum)
     }
 
-    onVisibleChanged: {
-        if (visible && !isInit){
-            console.log("start init")
-
-            devService.initService(hostIp, hostPort, devNum)
-        }
-    }
-
-    Component.onCompleted: {
+    onInitDev: {
+        console.log("start init")
         console.log("devNum:", devNum, "hostIp:", hostIp, "hostPort:", hostPort)
+        devService.initService(hostIp, hostPort, devNum)
     }
 
     DevService{
