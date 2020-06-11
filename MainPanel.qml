@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.12
 import DevServiceQml 1.0
 
 Window {
+    id: mainPanel
     visible: true
     width: 640
     height: 480
@@ -22,6 +23,10 @@ Window {
         VirtualDevs {
             Layout.fillHeight: true
             Layout.fillWidth: true
+
+            onDevSwitch: {
+                mainPanel.switchDev(devid)
+            }
         }
 
         DevInfo {

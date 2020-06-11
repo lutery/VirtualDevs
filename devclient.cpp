@@ -73,7 +73,7 @@ void DevClient::readData()
 {
     qDebug() << "DevId " << mDevID << "receive dara";
     LOGIM("DevId", mDevID.toStdString(), "receive data");
-    emit receiveLog(mpMyLog->addLogs({"DevId", mDevID, "born"}));
+    emit receiveLog(mpMyLog->addLogs({"DevId", mDevID, "receive data"}));
 
     if (mpClient->bytesAvailable() <= 0)
     {

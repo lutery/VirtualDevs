@@ -22,7 +22,12 @@ DeviceManager::DeviceManager(DevInit &devInit, QObject *parent):QObject (parent)
 //        DevClient* pDevClient = new DevClient();
 //        pDevClient->initDevice(mServerIP, mServerPort);
         // 只有切换到某个设备的时候，才进行信号的连接
-        connect(pDevClient, SIGNAL(receiveLog(QString)), this, SIGNAL(receiveLog(QString)));
+        if (i == 0)
+        {
+            mpCurDev = pDevClient;
+            connect(pDevClient, SIGNAL(receiveLog(QString)), this, SIGNAL(receiveLog(QString)));
+        }
+//        connect(pDevClient, SIGNAL(receiveLog(QString)), this, SIGNAL(receiveLog(QString)));
         connect(pDevClient, SIGNAL(devconnect(QString)), this, SLOT(devConnect(QString)));
         connect(pDevClient, SIGNAL(devdisconnect(QString)), this, SLOT(devDisconnect(QString)));
         mDevs.insert(pDevClient->devID(), pDevClient);

@@ -7,6 +7,8 @@ Rectangle {
 
     id: mainPanel
 
+    signal devSwitch(string devid);
+
     ColumnLayout{
         anchors.fill: parent
 
@@ -60,6 +62,7 @@ Rectangle {
                     onClicked: {
                         console.log(index)
                         virtualList.currentIndex = index
+                        mainPanel.devSwitch(devsModel.get(index).devid)
                     }
             }
         }

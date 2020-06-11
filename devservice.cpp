@@ -22,4 +22,9 @@ namespace onechchy
         QObject::connect(DeviceManager::getInstance(), SIGNAL(sdevDisconnect(QString)), this, SIGNAL(devDisconnect(QString)));
         QObject::connect(DeviceManager::getInstance(), SIGNAL(receiveLog(QString)), this, SIGNAL(receiveLog(QString)));
     }
+
+    void DevService::switchDevLog(QString devId)
+    {
+        DeviceManager::getInstance()->switchDev(devId);
+    }
 }

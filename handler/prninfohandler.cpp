@@ -38,5 +38,7 @@ bool PrnInfoHandler::handle(DevClient &devClient, DeviceOrder &deviceOrder)
     QJsonObject prnInfo = prnInfoDoc.object();
     qDebug() << "prn id is " << prnInfo["prnid"] << ", prn size is " << prnInfo["size"];
 
+    devClient.writeAndFlush(ToolUtil::getResultMsg("ok", mpVerify));
+
     return true;
 }

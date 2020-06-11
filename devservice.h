@@ -15,6 +15,7 @@ namespace onechchy
         explicit DevService(QObject *parent = nullptr);
 
         Q_INVOKABLE void initService(QString hostIp, quint16 hostPort, int numDev);
+        Q_INVOKABLE void switchDevLog(QString devId);
 
     signals:
         void devConnect(QString devId);
