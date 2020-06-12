@@ -18,6 +18,14 @@ bool MD5Verify::verifyContent(QByteArray verifyCode, QByteArray verifyContent)
 
 QByteArray MD5Verify::generateVerifyCode(QByteArray content)
 {
+    if (content.length() <= 0)
+    {
+        return QByteArray().append((unsigned char)0x00).append((unsigned char)0x00).append((unsigned char)0x00).append((unsigned char)0x00)
+                .append((unsigned char)0x00).append((unsigned char)0x00).append((unsigned char)0x00).append((unsigned char)0x00)
+                .append((unsigned char)0x00).append((unsigned char)0x00).append((unsigned char)0x00).append((unsigned char)0x00)
+                .append((unsigned char)0x00).append((unsigned char)0x00).append((unsigned char)0x00).append((unsigned char)0x00);
+    }
+
     QCryptographicHash md5(QCryptographicHash::Md5);
     md5.addData(content);
 

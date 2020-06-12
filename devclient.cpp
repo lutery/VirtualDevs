@@ -8,6 +8,7 @@
 #include <QJsonDocument>
 #include "printerorder.h"
 #include <QByteArray>
+#include <QTimer>
 #include "handler/devinfohandler.h"
 #include "handler/devstatushandler.h"
 #include "handler/heartbeathandler.h"
@@ -27,6 +28,7 @@ DevClient::DevClient(QObject *parent) : QObject(parent), mpClient(nullptr)
     connect(mpClient, SIGNAL(connected()), this, SLOT(connected()));
     connect(mpClient, SIGNAL(disconnected()), this, SLOT(disconnected()));
     connect(mpClient, SIGNAL(bytesWritten(qint64)), this, SLOT(hasWritten(qint64)));
+    connect(this, &DevClient::rTimeOut, this, &DevClient::readTimeOut);
 
     DevInfoHandler* infoHandler = new DevInfoHandler();
     DevStatusHandler* devStatusHandler = new DevStatusHandler();
@@ -67,6 +69,18 @@ void DevClient::initDevice(QString serverIP, quint16 serverPort)
     qDebug() << "DevId " << mDevID << " born";
     LOGIM("DevId", mDevID.toStdString(), "born");
     emit receiveLog(mpMyLog->addLogs({"DevId", mDevID, "born"}));
+
+    if (mReadTimer != nullptr)
+    {
+        mReadTimer->stop();
+    }
+
+    mReadTimer = new QTimer(this);
+    mReadTimer->setSingleShot(false);
+    mReadTimer->start(3000);
+    connect(mReadTimer, &QTimer::timeout, [&](){
+        emit this->rTimeOut();
+    });
 }
 
 void DevClient::readData()
@@ -231,6 +245,14 @@ void DevClient::writeAndFlush(QByteArray &&data)
 {
     mpClient->write(data);
     mpClient->flush();
+}
+
+void DevClient::readTimeOut()
+{
+    qDebug() << "devid: " << devID() << " read Time Out";
+    IVerify* pVerify = new CRC16CCITT();
+    mpClient->write(ToolUtil::getHeartMsg(pVerify));
+    delete pVerify;
 }
 
 QString DevClient::devID() const

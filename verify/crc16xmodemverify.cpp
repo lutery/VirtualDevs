@@ -12,6 +12,11 @@ bool CRC16XModemVerify::verifyContent(QByteArray verifyCode, QByteArray verifyCo
 
 QByteArray CRC16XModemVerify::generateVerifyCode(QByteArray content)
 {
+    if (content.length() <= 0)
+    {
+        return QByteArray().append((unsigned char)0x00).append((unsigned char)0x00);
+    }
+
     return this->CRC16_XMODEM((unsigned char*)content.data(), content.length());
 }
 

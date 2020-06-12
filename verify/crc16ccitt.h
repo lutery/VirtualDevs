@@ -8,7 +8,7 @@ class CRC16CCITT : public IVerify
     Q_OBJECT
 public:
     explicit CRC16CCITT(QObject *parent = nullptr);
-
+    virtual ~CRC16CCITT(){};
 
     // IVerify interface
 public:

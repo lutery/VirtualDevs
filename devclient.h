@@ -8,6 +8,7 @@
 class QTcpSocket;
 class AbsHandler;
 class MyLog;
+class QTimer;
 
 class DevClient : public QObject
 {
@@ -25,6 +26,7 @@ signals:
     void receiveLog(QString);
     void devconnect(QString);
     void devdisconnect(QString);
+    void rTimeOut();
 
 public slots:
     void readData();
@@ -35,7 +37,11 @@ public slots:
     void writeAndFlush(QByteArray& data);
     void writeAndFlush(QByteArray&& data);
 
+protected:
+    void readTimeOut();
+
 private:
+    QTimer* mReadTimer = nullptr;
     QString mServerIP;
     quint16 mServerPort;
     MyLog* mpMyLog = nullptr;

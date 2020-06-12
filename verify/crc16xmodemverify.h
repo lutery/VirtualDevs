@@ -8,6 +8,7 @@ class CRC16XModemVerify : public IVerify
     Q_OBJECT
 public:
     explicit CRC16XModemVerify(QObject *parent = nullptr);
+    virtual ~CRC16XModemVerify(){};
 
     // IVerify interface
 public:

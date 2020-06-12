@@ -4,7 +4,7 @@
 
 AsyncDevClient::AsyncDevClient(QString serverIP, quint16 serverPort) : mServerIP(serverIP), mServerPort(serverPort)
 {
-
+    mpDevClient = new DevClient();
 }
 
 AsyncDevClient::~AsyncDevClient()
@@ -35,8 +35,6 @@ void AsyncDevClient::run()
 //    while (true) {
 //        qDebug() << "AsyncDevClient run";
 //    }
-
-            mpDevClient = new DevClient();
             mpDevClient->initDevice(mServerIP, mServerPort);
 
             QEventLoop loop;

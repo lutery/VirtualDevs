@@ -78,6 +78,19 @@ QByteArray ToolUtil::getResultMsg(QString result, IVerify* verifyTool)
     return resultArray;
 }
 
+QByteArray ToolUtil::getHeartMsg(IVerify *verifyTool)
+{
+    QByteArray heartArray;
+
+    heartArray.append(PrinterOrder::HEARTBEAT())
+            .append((unsigned char)0x00).append((unsigned char)0x00).append((unsigned char)0x00).append((unsigned char)0x00)
+            .append((unsigned char)verifyTool->verifyType())
+            .append(verifyTool->generateVerifyCode(QByteArray()))
+            .append((unsigned char)0x24);
+
+    return heartArray;
+}
+
 QString ToolUtil::str2Md5(QString &&str)
 {
     return QString().append(QCryptographicHash::hash(str.toUtf8(), QCryptographicHash::Md5).toHex());

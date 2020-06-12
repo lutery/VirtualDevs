@@ -28,6 +28,11 @@ VerifyType CRC16CCITT::verifyType()
 
 QByteArray CRC16CCITT::crc16ccitt(QByteArray content)
 {
+    if (content.length() <= 0)
+    {
+        return QByteArray().append((unsigned char)0x00).append((unsigned char)0x00);
+    }
+
     quint16 verifyCode = ToolUtil::generalCRC16(0, 0x1021, 0, true, true, content.data(), content.length());
 
     QByteArray verifyCodeBuf;

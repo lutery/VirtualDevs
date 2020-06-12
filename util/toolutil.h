@@ -16,6 +16,7 @@ public:
     static bool isNum(std::string str);
     static int genRangeInt(int min, int max);
     static QByteArray getResultMsg(QString result, IVerify* verifyTool);
+    static QByteArray getHeartMsg(IVerify* verifyTool);
     static QString str2Md5(QString&& str);
     static QString bytes2Md5(QByteArray& byteArray);
     static QByteArray strCodecTo(QString src, QString toCodec);

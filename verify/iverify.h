@@ -18,9 +18,9 @@ class IVerify : public QObject
     Q_OBJECT
 protected:
     explicit IVerify(QObject *parent = nullptr);
-    virtual ~IVerify(){}
 
 public:
+    virtual ~IVerify(){}
     virtual bool verifyContent(QByteArray verifyCode, QByteArray verifyContent) = 0;
     virtual QByteArray generateVerifyCode(QByteArray content) = 0;
     virtual VerifyType verifyType() = 0;
